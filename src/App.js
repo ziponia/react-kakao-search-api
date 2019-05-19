@@ -4,21 +4,29 @@ import { blogSearch } from "./api";
 import "./App.css";
 import Item from "./Item";
 
+import { withRouter } from "react-router-dom";
+
 const App = props => {
+  const { params } = props.match;
+  const keyword = params.keyword || "";
+
   const [blogs, setBlogs] = useState([]);
-  const [text, setText] = useState("");
-  const [query, setQuery] = useState("");
+  const [text, setText] = useState(keyword);
+  // const [query, setQuery] = useState(keyword);
 
   useEffect(() => {
-    if (query.length > 0) {
-      blogSearchHttpHandler(query, true);
+    if (keyword.length > 0) {
+      blogSearchHttpHandler(keyword, true);
+    } else {
+      setBlogs([]);
     }
-  }, [query]);
+  }, [keyword]);
 
   // 엔터를 눌렀을 때 호출 되는 함수
   const onEnter = e => {
     if (e.keyCode === 13) {
-      setQuery(text);
+      if (text.length === 0) props.history.push(`/`);
+      else props.history.push(`/search/${text}`);
     }
   };
 
@@ -71,4 +79,4 @@ const App = props => {
   );
 };
 
-export default App;
+export default withRouter(App);
