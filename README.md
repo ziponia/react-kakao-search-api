@@ -2,7 +2,7 @@
 layout: post
 title: "[리액트] API 사용하기"
 summary: "Kakao API 를 활용해서 블로그 서비스를 만들어 보자"
-tagline: [kakao, search, axios, api]
+tags: [react]
 ---
 
 source: [https://github.com/ziponia/react-kakao-search-api](https://github.com/ziponia/react-kakao-search-api)
@@ -31,7 +31,7 @@ $ yarn add axios
 
 _App.js_
 
-```js
+```jsx
 import React from "react";
 import "./App.css";
 
@@ -59,7 +59,7 @@ request 로 https://dapi.kakao.com/v2/search/blog 로 요청하고 header 로 �
 
 _src/api.js_
 
-```javascript
+```jsx
 import axios from "axios";
 
 const Kakao = axios.create({
@@ -79,7 +79,7 @@ export const blogSearch = params => {
 
 이제 App.js 에 가서 api 를 호출 해보자.
 
-```javascript
+```jsx
 import React, { useEffect } from "react";
 import { blogSearch } from "./api";
 
@@ -121,13 +121,13 @@ export default App;
 
 이제 콘솔을 확인 해 보면, 잘 가져오는것을 볼 수 있다.
 
-![api call 1](/images/2019-5-19/kakao_blog_api_example_1.png)
+![api call 1](https://s3.ap-northeast-2.amazonaws.com/ziponia.github.io/2019-5-19/kakao_blog_api_example_1.png)
 
 이제 리스팅 해주는 컴포넌트를 만들어 주자.
 
 _src/Item.js_
 
-```javascript
+```jsx
 import React from "react";
 
 const Item = props => {
@@ -163,7 +163,7 @@ export default Item;
 
 먼저 기초데이터 state , 검색어 state, 쿼리 state 를 생성 해주자.
 
-```javascript
+```jsx
 const [blogs, setBlogs] = useState([]);
 const [text, setText] = useState("");
 const [query, setQuery] = useState("");
@@ -193,7 +193,7 @@ blogSearchHttpHandler 함수의 인자값으로, 첫번째는, 변경 된 query 
 
 다음, input 엘리먼트에다, 이벤트를 연결하자.
 
-```javascript
+```jsx
 <input
   type="search"
   placeholder="검색어를 입력 하세요..."
@@ -207,7 +207,7 @@ blogSearchHttpHandler 함수의 인자값으로, 첫번째는, 변경 된 query 
 
 그리고, onTextUpdate 가 호출 될 때, text state 를 변경 해주자.
 
-```javascript
+```jsx
 // text 검색어가 바뀔 때 호출되는 함수.
 const onTextUpdate = e => {
   setText(e.target.value);
@@ -216,7 +216,7 @@ const onTextUpdate = e => {
 
 다음으로, enter 를 눌렀을 때, query state 를 text state 로 교체 해주자.
 
-```javascript
+```jsx
 // 엔터를 눌렀을 때 호출 되는 함수
 const onEnter = e => {
   if (e.keyCode === 13) {
@@ -227,8 +227,8 @@ const onEnter = e => {
 
 이제, blogSearchHttpHandler 에서, api 를 호출 한후, 호출 한 데이터와, 현재 blogs state 를 병합 해 주자.
 
-```javascript
-const blogSearchHttpHandler = async () => {
+```jsx
+const blogSearchHttpHandler = async (query, reset) => {
   const params = {
     query: query,
     sort: "accuracy", // accuracy | recency 정확도 or 최신
@@ -247,7 +247,7 @@ const blogSearchHttpHandler = async () => {
 
 그 다음, 우리가 아까 만들어 둔 컴포넌트를 랜더링 해 주면 된다.
 
-```javascript
+```jsx
 return (
   <div className="container">
     <input
@@ -278,7 +278,7 @@ return (
 
 결과적으론 이런 소스가 된다.
 
-```javascript
+```jsx
 import React, { useEffect, useState } from "react";
 import { blogSearch } from "./api";
 
@@ -438,7 +438,7 @@ li dl dd {
 
 최종 결과
 
-![이미지](/images/2019-5-19/kakao_blog_api_example_result.png)
+![이미지](https://s3.ap-northeast-2.amazonaws.com/ziponia.github.io/2019-5-19/kakao_blog_api_example_result.png)
 
 _마무리_
 
